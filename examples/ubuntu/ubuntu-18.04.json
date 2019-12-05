@@ -3,18 +3,22 @@
     {
       "type": "vsphere-iso",
 
-      "vcenter_server":      "vcenter.vsphere65.test",
-      "username":            "root",
-      "password":            "jetbrains",
+      "vcenter_server":      "<vcentre IP or dns>",
+      "username":            "<vcentre username>",
+      "password":            "<vcentre passwd>",
       "insecure_connection": "true",
 
-      "vm_name": "example-ubuntu",
-      "host":     "esxi-1.vsphere65.test",
+      "vm_name": "spectro-vsphere-ubuntu",
+      "datacenter": "Datacenter",
+      "datastore": "vsanDatastore",
+      "cluster": "vSAN Cluster",
+      "host":     "<esxi ip or dns>",
 
       "guest_os_type": "ubuntu64Guest",
 
-      "ssh_username": "jetbrains",
-      "ssh_password": "jetbrains",
+      "ssh_username": "ubuntu",
+      "ssh_password": "ubuntu",
+      "ssh_timeout": "30m",
 
       "CPUs":             1,
       "RAM":              1024,
@@ -27,7 +31,7 @@
       "network_card": "vmxnet3",
 
       "iso_paths": [
-        "[datastore1] ISO/ubuntu-16.04.3-server-amd64.iso"
+            "[vsanDatastore] ISO/ubuntu-18.04.3-live-server-amd64.iso"
       ],
       "floppy_files": [
         "{{template_dir}}/preseed.cfg"
@@ -45,7 +49,11 @@
         "<bs><bs><bs>",
         "/install/vmlinuz",
         " initrd=/install/initrd.gz",
+        " auto=true",
         " priority=critical",
+        " console-setup/ask_detect=false",
+        "console-setup/layoutcode=us console-setup/modelcode=pc105 debconf/frontend=noninteractive debian-installer=en_US fb=false",
+        "kbd-chooser/method=us keyboard-configuration/layout=USA keyboard-configuration/variant=USA locale=en_US netcfg/get_domain=local netcfg/get_hostname=localhost",
         " locale=en_US",
         " file=/media/preseed.cfg",
         "<enter>"
